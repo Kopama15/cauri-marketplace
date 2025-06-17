@@ -6,16 +6,17 @@ import fr from '../locales/fr.json';
 const translations = { en, fr };
 const defaultLang = 'fr';
 
-const TranslationContext = createContext();
 
-export const TranslationProvider = ({ children }) => {
-  const [language, setLanguage] = useState(defaultLang);
-  const t = (key) => translations[language][key] || key;
-  return (
-    <TranslationContext.Provider value={{ language, setLanguage, t }}>
-      {children}
-    </TranslationContext.Provider>
-  );
+type TranslationContextType = {
+  language: string;
+  setLanguage: (lang: string) => void;
+  t: (key: string) => string;
 };
 
-export const useTranslation = () => useContext(TranslationContext);
+const defaultContext: TranslationContextType = {
+  language: 'fr',
+  setLanguage: () => {},
+  t: (key) => key,
+};
+
+export const TranslationContext = createContext<TranslationContextType>(defaultContext);
